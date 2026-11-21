@@ -1,0 +1,6 @@
+.env
+google-credentials.json
+*.db
+.venv/
+__pycache__/
+.pytest_cache/

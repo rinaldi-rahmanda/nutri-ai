@@ -1,0 +1,23 @@
+# systemd unit for running the bot on a Raspberry Pi (or any Linux box).
+# Install steps are in the README, "Running on a Raspberry Pi".
+#
+# Assumes the Pi user is "pi" and the project is in /home/pi/nutri-ai.
+# If yours differs, change User, WorkingDirectory and ExecStart below.
+
+[Unit]
+Description=nutri-ai Telegram bot
+# Wait for the network, since the bot is useless without it.
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=pi
+WorkingDirectory=/home/pi/nutri-ai
+# Runs the virtualenv's Python directly, so nothing is downloaded or synced at boot.
+ExecStart=/home/pi/nutri-ai/.venv/bin/python -m nutri_ai
+# Restart after a crash or a network hiccup, but not in a tight loop.
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
